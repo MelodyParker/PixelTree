@@ -15,6 +15,7 @@ def home():
 # Define an additional API route
 @app.route("/api/toggle")
 def status():
+    global led_status
     if led_status:
         led.off()
         led_status = 0
