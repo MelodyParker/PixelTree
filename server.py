@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from gpiozero import LED
 
 # Initialize the Flask application
@@ -10,10 +10,10 @@ led_status = 0
 # Define the root route
 @app.route("/")
 def home():
-    return "<h1>Flask Server is Running!</h1>"
+    return render_template("index.html")
 
 # Define an additional API route
-@app.route("/api/toggle")
+@app.route("/led/toggle")
 def status():
     global led_status
     if led_status:
@@ -22,10 +22,10 @@ def status():
     else:
         led.on()
         led_status = 1
-    return "Bob"
+    return "Toggled!"
 
 # Start the server if the script is executed directly
 if __name__ == "__main__":
     # debug=True enables auto-reload on code changes
     # host="0.0.0.0" allows external access on your local network
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)
