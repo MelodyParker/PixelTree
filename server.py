@@ -1,10 +1,10 @@
-import os
 from flask import Flask
-import gpiozero import LED
+from gpiozero import LED
 
 # Initialize the Flask application
 app = Flask(__name__)
 
+led = LED(17)
 led_status = 0
 
 # Define the root route
@@ -13,9 +13,15 @@ def home():
     return "<h1>Flask Server is Running!</h1>"
 
 # Define an additional API route
-@app.route("/api/status")
+@app.route("/api/toggle")
 def status():
-    return {"status": "online", "message": "Server is healthy"}
+    if led_status:
+        led.off()
+        led_status = 0
+    else:
+        led.on()
+        led_status = 1
+    return "Bob"
 
 # Start the server if the script is executed directly
 if __name__ == "__main__":
