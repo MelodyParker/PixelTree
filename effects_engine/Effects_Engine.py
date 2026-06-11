@@ -1,5 +1,5 @@
 import asyncio
-from Effect import Effect
+from effects_engine.Effect import Effect
 from typing import Optional, Dict
 from json import dumps
 
