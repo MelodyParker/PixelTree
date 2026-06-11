@@ -115,6 +115,7 @@ def home():
 def red():
     global pixels
     pixels.fill(RED)
+    pixels.show()
     print("Changed pixels to red")
     return "RED"
 
@@ -122,6 +123,7 @@ def red():
 def green():
     global pixels
     pixels.fill(GREEN)
+    pixels.show()
     print("Changed pixels to green")
     return "GREEN"
 
@@ -129,6 +131,7 @@ def green():
 def blue():
     global pixels
     pixels.fill(BLUE)
+    pixels.show()
     print("Changed pixels to blue")
     return "BLUE"
 # Start the server if the script is executed directly
