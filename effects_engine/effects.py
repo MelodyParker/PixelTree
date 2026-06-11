@@ -56,8 +56,8 @@ class FillRedEffect(Effect):
 class FillRGBEffect(Effect):
     @staticmethod
     async def run(pixels, rgb, *args, **kwargs):
-        r, g, b = rgb
-        pixels.fill((g, r, b))
+        # r, g, b = rgb
+        pixels.fill(rgb)
         pixels.show()
 
 @engine.register_effect_factory("flash-colors")
@@ -66,8 +66,8 @@ class FlashColors(Effect):
     async def run(pixels, colors, durations, *args, **kwargs):
         while True:
             for color, duration in zip(colors, durations):
-                r, g, b = color
-                pixels.fill((g, r, b))
+                # r, g, b = color
+                pixels.fill(color)
                 pixels.show()
                 await asyncio.sleep(duration)
 
@@ -78,8 +78,8 @@ class AlternatingColorsEffect(Effect):
         num_colors = len(colors)
         if not move:
             for i, pixel in enumerate(pixels):
-                r, g, b = colors[i % num_colors]
-                pixels[i] = (g, r, b)
+                color = colors[i % num_colors]
+                pixels[i] = color
             pixels.show()
 
 
