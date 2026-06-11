@@ -11,7 +11,7 @@ BRIGHTNESS = 1.0
 
 def gamma_correct(color):
     # A standard gamma value for NeoPixels
-    gamma_val = 4
+    gamma_val = 3
     
     # Unpack RGB tuple
     r, g, b = color
