@@ -61,6 +61,7 @@ class AlternatingColorsEffect(Effect):
             for i, pixel in enumerate(pixels):
                 r, g, b = colors[i % num_colors]
                 pixels[i] = (g, r, b)
+            pixels.show()
 
 
 
