@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import RPi.GPIO as GPIO         # Import Raspberry Pi GPIO library
 from time import sleep          # Import the sleep function 
 import time
@@ -153,6 +153,7 @@ def effects_api():
     return engine.effects_to_json()
 
 @app.route("/effect/run/", methods=["POST"])
+@cross_origin()
 async def run_effect():
     json_data = request.get_json()
     _ = engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
