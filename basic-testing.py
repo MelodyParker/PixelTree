@@ -58,15 +58,28 @@ print("Starting stuff")
 # print(hsv_to_rgb(200, 0.8, 0.9))
 # Output: (45, 183, 229)
 
+def lerp(start, end, proportion):
+    return start + (end - start) * proportion
 
 try:
     while True:
         pixels.fill(CLEAR)
         print("PINK")
-        for i in range(NUM_PIXELS):
-            pixels[i] = hsv_to_grb(7 * i, 1, 0.6)
-            pixels.show()
-            time.sleep(0.1)
+        for i in range(3, NUM_PIXELS):
+            for j in range(10):
+                pixels[i] = hsv_to_grb(7 * i, 1, j / 10)
+                pixels[i-1] = hsv_to_grb(7 * (i - 1), 1, 0.9)
+                pixels[i-2] = hsv_to_grb(7 * (i - 2), 1, 0.9)
+                pixels[i-3] = hsv_to_grb(7 * (i - 3), 1, 0.9 - j / 10)
+                pixels.show()
+                time.sleep(0.005)
+            #pixels[i] = hsv_to_grb(7 * i, 1, 1)
+            #pixels[i+1] = hsv_to_grb(7 * (i+1), 1, 1)
+            #pixels[i+2] = hsv_to_grb(7 * (i+2), 1, 1)
+            #pixels.show()
+            #pixels[i:i+3] = CLEAR
+            #time.sleep(0.05)
+        #    time.sleep(0.1)
         # 1. Fill the entire strip Blue
         #print("BLUE")
         #for i in range(NUM_PIXELS):
