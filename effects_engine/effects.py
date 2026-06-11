@@ -35,10 +35,21 @@ class FillRGBEffect(Effect):
         pixels.fill((g, r, b))
         pixels.show()
 
+@engine.register_effect_factory("flash-colors")
+class FlashColors(Effect):
+    @staticmethod
+    async def run(pixels, colors, durations, *args, **kwargs):
+        while True:
+            for color, duration in zip(colors, durations):
+                r, g, b = color
+                pixels.fill((g, r, b))
+                pixels.show()
+                await asyncio.sleep(duration)
+
 async def main():
     while True:
-        await engine.run_effect("fill-rgb", (0, 255, 0)) # make it green?
-        await asyncio.sleep(1)
+        await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
+        await asyncio.sleep(3)
         await engine.run_effect("fill-rgb", (0, 0, 0))
         await asyncio.sleep(1)
 
