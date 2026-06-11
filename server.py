@@ -18,7 +18,7 @@ def home():
     return render_template("index.html")
 
 # Define an additional API route
-@app.route("/led/toggle")
+@app.route("/led/toggle/")
 def status():
     global led_status
     if led_status:
