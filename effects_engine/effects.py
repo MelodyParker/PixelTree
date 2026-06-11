@@ -88,7 +88,7 @@ class AlternatingColorsEffect(Effect):
 async def main():
     try:
         while True:
-            await engine.run_effect("fill-rgb", (228, 3, 3))# , (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)])
+            await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)])
             await asyncio.sleep(10)
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
