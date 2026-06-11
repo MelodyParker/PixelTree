@@ -31,7 +31,7 @@ pixels = neopixel.NeoPixel(
     NUM_PIXELS,
     brightness=BRIGHTNESS,
     auto_write=False,
-    pixel_order=neopixel.GRB
+    pixel_order=neopixel.RGB
 )
 
 
