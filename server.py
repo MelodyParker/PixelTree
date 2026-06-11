@@ -4,7 +4,7 @@ from gpiozero import LED
 # Initialize the Flask application
 app = Flask(__name__)
 
-led = LED(17)
+led = LED(5)
 led_status = 0
 
 # Define the root route
@@ -28,4 +28,4 @@ def status():
 if __name__ == "__main__":
     # debug=True enables auto-reload on code changes
     # host="0.0.0.0" allows external access on your local network
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
