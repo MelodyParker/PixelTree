@@ -10,6 +10,7 @@
     <button type="button" id="red-btn">RED</button>
     <button type="button" id="green-btn">GREEN</button>
     <button type="button" id="blue-btn">BLUE</button>
+    <button type="button" id="off-btn">OFF</button>
     <script>
         const btnR = document.querySelector("#red-btn");
         btnR.addEventListener("click", async e => {
@@ -22,6 +23,10 @@
         const btnB = document.querySelector("#blue-btn");
         btnB.addEventListener("click", async e => {
             await fetch("leds/blue/");
+        })
+        const btnOff = document.querySelector("#off-btn");
+        btnOff.addEventListener("click", async e => {
+            await fetch("leds/off/");
         })
     </script>
 </body>
