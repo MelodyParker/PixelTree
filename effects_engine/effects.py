@@ -58,7 +58,7 @@ class FillRGBEffect(Effect):
     @staticmethod
     async def run(pixels, rgb, *args, **kwargs):
         # r, g, b = rgb
-        pixels.fill(rgb)
+        pixels.fill(gamma_correct(rgb))
         pixels.show()
 
 @engine.register_effect_factory("flash-colors")
@@ -80,7 +80,7 @@ class AlternatingColorsEffect(Effect):
         if not move:
             for i, pixel in enumerate(pixels):
                 color = colors[i % num_colors]
-                pixels[i] = color
+                pixels[i] = gamma_correct(color)
             pixels.show()
 
 
@@ -88,7 +88,7 @@ class AlternatingColorsEffect(Effect):
 async def main():
     try:
         while True:
-            await engine.run_effect("alternating-colors", [gamma_correct((91, 206, 205)), gamma_correct((245, 169, 184)), gamma_correct((255, 255, 255))])
+            await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)])
             await asyncio.sleep(10)
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
