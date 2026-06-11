@@ -134,6 +134,15 @@ def blue():
     pixels.show()
     print("Changed pixels to blue")
     return "BLUE"
+
+@app.route("/leds/off/")
+def off():
+    global pixels
+    pixels.fill(CLEAR)
+    pixels.show()
+    print("Turned off pixels")
+    return "OFF"
+
 # Start the server if the script is executed directly
 if __name__ == "__main__":
     # debug=True enables auto-reload on code changes
