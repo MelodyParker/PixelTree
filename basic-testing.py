@@ -5,7 +5,7 @@ import neopixel
 # Configure the system variables
 PIXEL_PIN = board.D18       # GPIO pin used
 NUM_PIXELS = 50             # Number of NeoPixels in your strip
-BRIGHTNESS = 0.5            # Set brightness level (0.0 to 1.0)
+BRIGHTNESS = 1.0            # Set brightness level (0.0 to 1.0)
 
 # Initialize the NeoPixel strip
 pixels = neopixel.NeoPixel(
@@ -19,15 +19,25 @@ pixels = neopixel.NeoPixel(
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+PINK = (0, 255, 127)
 CLEAR = (0, 0, 0)
 
 print("Starting stuff")
 
 try:
     while True:
+        pixels.fill(CLEAR)
+        print("PINK")
+        for i in range(NUM_PIXELS):
+            pixels[i] = PINK
+            pixels.show()
+            time.sleep(0.1)
         # 1. Fill the entire strip Blue
         print("BLUE")
-        pixels.fill(BLUE)
+        for i in range(NUM_PIXELS):
+            pixels[i] = BLUE
+            pixels.show()
+            time.sleep(0.1)
         pixels.show()
         time.sleep(1)
 
