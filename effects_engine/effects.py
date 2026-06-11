@@ -29,4 +29,7 @@ class FillRedEffect(Effect):
         pixels.fill((0, 255, 0))
         pixels.show()
 
-asyncio.run(engine.run_effect("fill-red"))
+async def main():
+    await engine.run_effect("fill-red")
+
+asyncio.run(main())
