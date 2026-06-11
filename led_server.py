@@ -138,4 +138,4 @@ def blue():
 if __name__ == "__main__":
     # debug=True enables auto-reload on code changes
     # host="0.0.0.0" allows external access on your local network
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
