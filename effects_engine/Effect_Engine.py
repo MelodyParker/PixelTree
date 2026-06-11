@@ -15,10 +15,10 @@ class Effect_Engine:
             return cls
         return decorator
     
-    async def run_effect(self, name):
+    async def run_effect(self, name, *args, **kwargs):
         if not self.registered_effects.get(name):
             raise KeyError("Unregistered effect")
         effect = self.registered_effects.get(name)
-        await effect.run(self.pixels)
+        await effect.run(self.pixels, *args, **kwargs)
         
     

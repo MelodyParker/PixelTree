@@ -22,14 +22,20 @@ engine = Effect_Engine(pixels)
 
 @engine.register_effect_factory("fill-red")
 class FillRedEffect(Effect):
-    def __init__(self):
-        pass
     @staticmethod
     async def run(pixels, *args, **kwargs):
         pixels.fill((0, 255, 0))
         pixels.show()
 
+@engine.register_effect_factory("fill-rgb")
+class FillRGBEffect(Effect):
+    @staticmethod
+    async def run(pixels, rgb, *args, **kwargs):
+        r, g, b = rgb
+        pixels.fill(g, r, b)
+        pixels.show()
+
 async def main():
-    await engine.run_effect("fill-red")
+    await engine.run_effect("fill-rgb", (0, 255, 0)) # make it green?
 
 asyncio.run(main())
