@@ -1,7 +1,9 @@
 import board
 import neopixel
+import asyncio
 from Effect import Effect
 from Effect_Engine import Effect_Engine
+
 
 PIXEL_PIN = board.D18
 NUM_PIXELS = 50
@@ -26,4 +28,4 @@ class FillRedEffect(Effect):
         pixels.fill((0, 255, 0))
         pixels.show()
 
-engine.run_effect("fill-red")
+asyncio.run(engine.run_effect("fill-red"))
