@@ -21,14 +21,18 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 CLEAR = (0, 0, 0)
 
+print("Starting stuff")
+
 try:
     while True:
         # 1. Fill the entire strip Blue
+        print("BLUE")
         pixels.fill(BLUE)
         pixels.show()
         time.sleep(1)
 
         # 2. Change individual pixels sequentially
+        print("RED")
         pixels.fill(CLEAR)
         for i in range(NUM_PIXELS):
             pixels[i] = RED
@@ -37,6 +41,7 @@ try:
         time.sleep(1)
 
         # 3. Fill the entire strip Green
+        print("GREEN")
         pixels.fill(GREEN)
         pixels.show()
         time.sleep(1)
