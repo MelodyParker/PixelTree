@@ -90,7 +90,7 @@ try:
 #        time.sleep(1)
 
         # 2. Change individual pixels sequentially
-        print("RED")
+        # print("RED")
  #       pixels.fill(CLEAR)
   #      for i in range(NUM_PIXELS):
    #         pixels[i] = RED
@@ -99,7 +99,7 @@ try:
  #       time.sleep(1)
 #
         # 3. Fill the entire strip Green
-        print("GREEN")
+        # print("GREEN")
      #   pixels.fill(GREEN)
       #  pixels.show()
        # time.sleep(1)
