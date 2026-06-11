@@ -7,7 +7,7 @@ from Effect_Engine import Effect_Engine
 
 PIXEL_PIN = board.D18
 NUM_PIXELS = 50
-BRIGHTNESS = 0.4
+BRIGHTNESS = 1.0
 
 pixels = neopixel.NeoPixel(
     PIXEL_PIN,
@@ -68,7 +68,7 @@ class AlternatingColorsEffect(Effect):
 async def main():
     try:
         while True:
-            await engine.run_effect("alternating-colors", [(91, 206, 205), (245, 169, 184), (255, 255, 255)])
+            await engine.run_effect("alternating-colors", [(91 / 2, 206, 205), (245, 169 / 2, 184 / 2), (255, 255, 255)])
             await asyncio.sleep(10)
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
