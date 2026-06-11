@@ -15,14 +15,12 @@ pixels = neopixel.NeoPixel(
     auto_write=False
 )
 
-# Define custom color tuples (Red, Green, Blue)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+# Define custom color tuples (Green, Red, Blue)
+RED = (0, 255, 0)
+GREEN = (255, 0, 0)
 BLUE = (0, 0, 255)
 PINK = (0, 255, 127)
 CLEAR = (0, 0, 0)
-
-print("Starting stuff")
 
 def hsv_to_grb(h, s, v):
     # Chroma, and matching variables based on HSV math
@@ -50,6 +48,10 @@ def hsv_to_grb(h, s, v):
         int((r + m) * 255),
         int((b + m) * 255)
     )
+
+
+
+print("Starting stuff")
 
 # Example Usage:
 # Hue = 200, Saturation = 0.8, Value = 0.9
