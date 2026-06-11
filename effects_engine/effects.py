@@ -15,7 +15,7 @@ pixels = neopixel.NeoPixel(
 )
 
 
-engine = Effect_Engine()
+engine = Effect_Engine(pixels)
 
 
 @engine.register_effect_factory("fill-red")
