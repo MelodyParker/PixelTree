@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import RPi.GPIO as GPIO         # Import Raspberry Pi GPIO library
 from time import sleep          # Import the sleep function 
@@ -152,6 +152,12 @@ led_status = 0
 def effects_api():
     return engine.effects_to_json()
 
+@app.route("/effect/run", methods=["POST"])
+async def run_effect():
+    json_data = request.get_json()
+    await engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
+    return jsonify({"status": "data received"})
+
 # Define the root route
 @app.route("/")
 def home():
@@ -190,8 +196,11 @@ def off():
     print("Turned off pixels")
     return "OFF"
 
+async def main():
+    app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
+
 # Start the server if the script is executed directly
 if __name__ == "__main__":
     # debug=True enables auto-reload on code changes
     # host="0.0.0.0" allows external access on your local network
-    app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
+    asyncio.run(main())
