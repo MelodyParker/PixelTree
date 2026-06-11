@@ -50,7 +50,9 @@ async def main():
     while True:
         await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
         await asyncio.sleep(3)
-        await engine.run_effect("fill-rgb", (0, 0, 0))
+        await engine.run_effect("fill-rgb", (255, 255, 0))
         await asyncio.sleep(1)
+        await engine.run_effect("flash-colors", [(255, 255, 0), (0, 255, 255), (255, 0, 255)], [1, 1, 1])
+        await asyncio.sleep(4)
 
 asyncio.run(main())
