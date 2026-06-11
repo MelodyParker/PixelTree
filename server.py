@@ -27,6 +27,7 @@ def status():
     else:
         GPIO.output(pinLED, GPIO.HIGH)
         led_status = 1
+    print("Attempted to Toggle")
     return "Toggled!"
 
 # Start the server if the script is executed directly
