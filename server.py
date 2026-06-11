@@ -1,10 +1,15 @@
 from flask import Flask, render_template
-from gpiozero import LED
+import RPi.GPIO as GPIO         # Import Raspberry Pi GPIO library
+from time import sleep          # Import the sleep function 
 
+pinLED = 4                      # LED GPIO Pin LED
+
+GPIO.setmode(GPIO.BCM)          # Use GPIO pin number
+GPIO.setwarnings(False)         # Ignore warnings in our case
+GPIO.setup(pinLED, GPIO.OUT)    # GPIO pin as output pin
 # Initialize the Flask application
 app = Flask(__name__)
 
-led = LED(5)
 led_status = 0
 
 # Define the root route
@@ -17,10 +22,10 @@ def home():
 def status():
     global led_status
     if led_status:
-        led.off()
+        GPIO.output(pinLED, GPIO.LOW)
         led_status = 0
     else:
-        led.on()
+        GPIO.output(pinLED, GPIO.HIGH)
         led_status = 1
     return "Toggled!"
 
