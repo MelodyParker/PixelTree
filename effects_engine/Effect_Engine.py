@@ -19,6 +19,6 @@ class Effect_Engine:
         if not self.registered_effects.get(name):
             raise KeyError("Unregistered effect")
         effect = self.registered_effects.get(name)
-        asyncio.run(effect.run)
+        asyncio.run(effect.run())
         
     
