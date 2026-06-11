@@ -52,23 +52,34 @@ class FlashColors(Effect):
                 pixels.show()
                 await asyncio.sleep(duration)
 
+@engine.register_effect_factory("alternating-colors")
+class AlternatingColorsEffect(Effect):
+    @staticmethod
+    async def run(pixels, colors, move=False, *args, **kwargs):
+        num_colors = len(colors)
+        if not move:
+            for i, pixel in enumerate(pixels):
+                r, g, b = colors[i % num_colors]
+                pixels[i] = (g, r, b)
+
 
 
 async def main():
     try:
         while True:
-            await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
-            await asyncio.sleep(3)
-            await engine.run_effect("off")
-            await asyncio.sleep(0.3)
-            await engine.run_effect("fill-rgb", (255, 255, 0))
-            await asyncio.sleep(1)
-            await engine.run_effect("off")
-            await asyncio.sleep(0.3)
-            await engine.run_effect("flash-colors", [(255, 255, 0), (0, 255, 255), (255, 0, 255)], [1, 1, 1])
-            await asyncio.sleep(4)
-            await engine.run_effect("off")
-            await asyncio.sleep(0.3)
+            await engine.run_effect("alternating-colors", [(255, 0, 0), (0, 255, 0)])
+            # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
+            # await asyncio.sleep(3)
+            # await engine.run_effect("off")
+            # await asyncio.sleep(0.3)
+            # await engine.run_effect("fill-rgb", (255, 255, 0))
+            # await asyncio.sleep(1)
+            # await engine.run_effect("off")
+            # await asyncio.sleep(0.3)
+            # await engine.run_effect("flash-colors", [(255, 255, 0), (0, 255, 255), (255, 0, 255)], [1, 1, 1])
+            # await asyncio.sleep(4)
+            # await engine.run_effect("off")
+            # await asyncio.sleep(0.3)
     finally:
         await engine.run_effect("off")
 
