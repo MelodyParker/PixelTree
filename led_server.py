@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_cors import CORS
 import RPi.GPIO as GPIO         # Import Raspberry Pi GPIO library
 from time import sleep          # Import the sleep function 
 import time
@@ -102,6 +103,7 @@ print("Starting stuff")
 
 # Initialize the Flask application
 app = Flask(__name__)
+CORS(app)
 
 led_status = 0
 

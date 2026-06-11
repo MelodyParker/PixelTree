@@ -62,7 +62,7 @@ class FillRGBEffect(Effect):
         pixels.show()
 
 @engine.register_effect_factory("flash-colors")
-class FlashColors(Effect):
+class FlashColorsEffect(Effect):
     @staticmethod
     async def run(pixels, colors, durations, *args, **kwargs):
         while True:
