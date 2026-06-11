@@ -7,7 +7,7 @@ from Effect_Engine import Effect_Engine
 
 PIXEL_PIN = board.D18
 NUM_PIXELS = 50
-BRIGHTNESS = 1.0
+BRIGHTNESS = 0.4
 
 pixels = neopixel.NeoPixel(
     PIXEL_PIN,
