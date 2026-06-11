@@ -26,11 +26,12 @@ def gamma_correct(color):
 
 
 
-pixels = neopixel.WS2812B_STRIP_GRB(
+pixels = neopixel.NeoPixel(
     PIXEL_PIN,
     NUM_PIXELS,
     brightness=BRIGHTNESS,
-    auto_write=False
+    auto_write=False,
+    pixel_order=neopixel.GRB
 )
 
 
