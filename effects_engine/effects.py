@@ -32,7 +32,7 @@ class FillRGBEffect(Effect):
     @staticmethod
     async def run(pixels, rgb, *args, **kwargs):
         r, g, b = rgb
-        pixels.fill(g, r, b)
+        pixels.fill((g, r, b))
         pixels.show()
 
 async def main():
