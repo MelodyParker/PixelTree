@@ -5,6 +5,9 @@ from time import sleep          # Import the sleep function
 import time
 import board
 import neopixel
+import asyncio
+from effects_engine.Effect import Effect
+from effects_engine.Effects_Engine import Effects_Engine
 
 
 # Configure the system variables
@@ -54,58 +57,100 @@ def hsv_to_grb(h, s, v):
         int((b + m) * 255)
     )
 
+def gamma_correct(color):
+    # A standard gamma value for NeoPixels
+    gamma_val = 3
+    
+    # Unpack RGB tuple
+    r, g, b = color
+    
+    # Apply the gamma curve to each channel
+    # Normalizing by 255.0, raising to power of gamma, then multiplying by 255
+    r_corr = int(pow(r / 255.0, gamma_val) * 255.0)
+    g_corr = int(pow(g / 255.0, gamma_val) * 255.0)
+    b_corr = int(pow(b / 255.0, gamma_val) * 255.0)
+    
+    return (r_corr, g_corr, b_corr)
 
 
 print("Starting stuff")
 
-# Example Usage:
-# Hue = 200, Saturation = 0.8, Value = 0.9
-# print(hsv_to_rgb(200, 0.8, 0.9))
-# Output: (45, 183, 229)
+engine = Effects_Engine(pixels)
 
+@engine.register_effect_factory("off", name="All Off", description="Turns off all LEDs", params=[])
+class OffEffect(Effect):
+    @staticmethod
+    async def run(pixels, *args, **kwargs):
+        pixels.fill((0, 0, 0))
+        pixels.show()
 
-# try:
-#     while True:
-#         pixels.fill(CLEAR)
-#         print("PINK")
-#         for i in range(NUM_PIXELS):
-#             pixels[i] = hsv_to_grb(7 * i, 1, 0.6)
-#             pixels.show()
-#             time.sleep(0.1)
-#         # 1. Fill the entire strip Blue
-#         print("BLUE")
-#         for i in range(NUM_PIXELS):
-#            pixels[i] = BLUE
-#            pixels.show()
-#            time.sleep(0.1)
-#         pixels.show()
-#         time.sleep(1)
+@engine.register_effect_factory("fill-red", name="Fill Red", description="Colors all LEDs red", params=[])
+class FillRedEffect(Effect):
+    @staticmethod
+    async def run(pixels, *args, **kwargs):
+        pixels.fill((255, 0, 0))
+        pixels.show()
 
-#         # 2. Change individual pixels sequentially
-#         print("RED")
-#         pixels.fill(CLEAR)
-#         for i in range(NUM_PIXELS):
-#            pixels[i] = RED
-#            pixels.show()
-#            time.sleep(0.05)
-#         time.sleep(1)
+@engine.register_effect_factory("fill-rgb", name="Fill RGB", 
+                                description="Colors all LEDs with the specified RGB color",
+                                params=[{"type": "color", "name": "Color"}])
+class FillRGBEffect(Effect):
+    @staticmethod
+    async def run(pixels, rgb, *args, **kwargs):
+        # r, g, b = rgb
+        pixels.fill(gamma_correct(rgb))
+        pixels.show()
 
-#         # 3. Fill the entire strip Green
-#         print("GREEN")
-#         pixels.fill(GREEN)
-#         pixels.show()
-#         time.sleep(1)
+@engine.register_effect_factory("flash-colors", name="Flash Colors",
+                                description="Flashes all pixels with the given colors",
+                                params=[{"type": "list color", "length": "N", "name": "Colors"}, 
+                                        {"type": "list number", "length": "N", "name": "Durations"}])
+class FlashColorsEffect(Effect):
+    @staticmethod
+    async def run(pixels, colors, durations, *args, **kwargs):
+        while True:
+            for color, duration in zip(colors, durations):
+                # r, g, b = color
+                pixels.fill(color)
+                pixels.show()
+                await asyncio.sleep(duration)
 
-# except KeyboardInterrupt:
-#     # Clean up and turn off LEDs on exit
-#     pixels.fill(CLEAR)
-#     pixels.show()
+@engine.register_effect_factory("alternating-colors", name="Alternate Colors",
+                                description="Alternates pixels with the given colors",
+                                params=[{"type": "list color", "length": "N", "name": "Colors"},
+                                        {"type": "bool", "default": "false", "name": "Move?"},
+                                        {"type": "number", "default": "1", "name": "Direction (positive = forward)"},
+                                        {"type": "number", "default": "1", "name": "Duration"}])
+class AlternatingColorsEffect(Effect):
+    @staticmethod
+    # direction 1 means forwards, direction -1 means backwards
+    async def run(pixels, colors, move=False, direction=1, duration=1, *args, **kwargs):
+        num_colors = len(colors)
+        if not move:
+            for i, pixel in enumerate(pixels):
+                color = colors[i % num_colors]
+                pixels[i] = gamma_correct(color)
+            pixels.show()
+            return
+        offset = 0
+        while True:
+            for i, pixel in enumerate(pixels):
+                color = colors[(i + offset) % num_colors]
+                pixels[i] = gamma_correct(color)
+            pixels.show()
+            offset -= direction
+            await asyncio.sleep(duration)
 
-# Initialize the Flask application
+        
+
 app = Flask(__name__)
 CORS(app)
 
 led_status = 0
+
+@app.route("/api/effects/")
+def effects_api():
+    return engine.effects_to_json()
 
 # Define the root route
 @app.route("/")

@@ -2,7 +2,7 @@ import board
 import neopixel
 import asyncio
 from Effect import Effect
-from Effect_Engine import Effect_Engine
+from effects_engine.Effects_Engine import Effects_Engine
 
 
 PIXEL_PIN = board.D18
@@ -35,25 +35,27 @@ pixels = neopixel.NeoPixel(
 )
 
 
-engine = Effect_Engine(pixels)
+engine = Effects_Engine(pixels)
 
 
 
-@engine.register_effect_factory("off")
+@engine.register_effect_factory("off", name="All Off", description="Turns off all LEDs", params=[])
 class OffEffect(Effect):
     @staticmethod
     async def run(pixels, *args, **kwargs):
         pixels.fill((0, 0, 0))
         pixels.show()
 
-@engine.register_effect_factory("fill-red")
+@engine.register_effect_factory("fill-red", name="Fill Red", description="Colors all LEDs red", params=[])
 class FillRedEffect(Effect):
     @staticmethod
     async def run(pixels, *args, **kwargs):
         pixels.fill((255, 0, 0))
         pixels.show()
 
-@engine.register_effect_factory("fill-rgb")
+@engine.register_effect_factory("fill-rgb", name="Fill RGB", 
+                                description="Colors all LEDs with the specified RGB color",
+                                params=[{"type": "color", "name": "Color"}])
 class FillRGBEffect(Effect):
     @staticmethod
     async def run(pixels, rgb, *args, **kwargs):
@@ -61,7 +63,10 @@ class FillRGBEffect(Effect):
         pixels.fill(gamma_correct(rgb))
         pixels.show()
 
-@engine.register_effect_factory("flash-colors")
+@engine.register_effect_factory("flash-colors", name="Flash Colors",
+                                description="Flashes all pixels with the given colors",
+                                params=[{"type": "list color", "length": "N", "name": "Colors"}, 
+                                        {"type": "list number", "length": "N", "name": "Durations"}])
 class FlashColorsEffect(Effect):
     @staticmethod
     async def run(pixels, colors, durations, *args, **kwargs):
@@ -72,7 +77,12 @@ class FlashColorsEffect(Effect):
                 pixels.show()
                 await asyncio.sleep(duration)
 
-@engine.register_effect_factory("alternating-colors")
+@engine.register_effect_factory("alternating-colors", name="Alternate Colors",
+                                description="Alternates pixels with the given colors",
+                                params=[{"type": "list color", "length": "N", "name": "Colors"},
+                                        {"type": "bool", "default": "false", "name": "Move?"},
+                                        {"type": "number", "default": "1", "name": "Direction (positive = forward)"},
+                                        {"type": "number", "default": "1", "name": "Duration"}])
 class AlternatingColorsEffect(Effect):
     @staticmethod
     # direction 1 means forwards, direction -1 means backwards
