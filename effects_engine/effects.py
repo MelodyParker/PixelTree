@@ -24,7 +24,8 @@ engine = Effect_Engine(pixels)
 class FillRedEffect(Effect):
     def __init__(self):
         pass
-    async def run(self, pixels, *args, **kwargs):
+    @staticmethod
+    async def run(pixels, *args, **kwargs):
         pixels.fill((0, 255, 0))
         pixels.show()
 
