@@ -9,7 +9,7 @@ import neopixel
 # Configure the system variables
 PIXEL_PIN = board.D18       # GPIO pin used
 NUM_PIXELS = 50             # Number of NeoPixels in your strip
-BRIGHTNESS = 0.7            # Set brightness level (0.0 to 1.0)
+BRIGHTNESS = 0.3            # Set brightness level (0.0 to 1.0)
 
 # Initialize the NeoPixel strip
 pixels = neopixel.NeoPixel(
