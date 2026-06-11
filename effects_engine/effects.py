@@ -9,6 +9,23 @@ PIXEL_PIN = board.D18
 NUM_PIXELS = 50
 BRIGHTNESS = 1.0
 
+def gamma_correct(color):
+    # A standard gamma value for NeoPixels
+    gamma_val = 2.7
+    
+    # Unpack RGB tuple
+    r, g, b = color
+    
+    # Apply the gamma curve to each channel
+    # Normalizing by 255.0, raising to power of gamma, then multiplying by 255
+    r_corr = int(pow(r / 255.0, gamma_val) * 255.0)
+    g_corr = int(pow(g / 255.0, gamma_val) * 255.0)
+    b_corr = int(pow(b / 255.0, gamma_val) * 255.0)
+    
+    return (r_corr, g_corr, b_corr)
+
+
+
 pixels = neopixel.NeoPixel(
     PIXEL_PIN,
     NUM_PIXELS,
@@ -18,6 +35,8 @@ pixels = neopixel.NeoPixel(
 
 
 engine = Effect_Engine(pixels)
+
+
 
 @engine.register_effect_factory("off")
 class OffEffect(Effect):
@@ -68,7 +87,7 @@ class AlternatingColorsEffect(Effect):
 async def main():
     try:
         while True:
-            await engine.run_effect("alternating-colors", [(91, 206, 205), (245, 169, 184), (255, 255, 255)])
+            await engine.run_effect("alternating-colors", [gamma_correct((91, 206, 205)), gamma_correct((245, 169, 184)), gamma_correct((255, 255, 255))])
             await asyncio.sleep(10)
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
