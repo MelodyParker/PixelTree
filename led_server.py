@@ -144,7 +144,8 @@ class AlternatingColorsEffect(Effect):
         
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, resources={r"/*": {"origins": "*", "allow_headers": ["Content-Type"], "methods": ["POST", "GET", "OPTIONS"]}})
 
 led_status = 0
 
