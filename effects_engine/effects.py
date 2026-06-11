@@ -36,6 +36,10 @@ class FillRGBEffect(Effect):
         pixels.show()
 
 async def main():
-    await engine.run_effect("fill-rgb", (0, 255, 0)) # make it green?
+    while True:
+        await engine.run_effect("fill-rgb", (0, 255, 0)) # make it green?
+        await asyncio.sleep(1)
+        await engine.run_effect("fill-rgb", (0, 0, 0))
+        await asyncio.sleep(1)
 
 asyncio.run(main())
