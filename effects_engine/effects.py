@@ -75,7 +75,7 @@ class FlashColors(Effect):
 @engine.register_effect_factory("alternating-colors")
 class AlternatingColorsEffect(Effect):
     @staticmethod
-    async def run(pixels, colors, move=False, duration=0, *args, **kwargs):
+    async def run(pixels, colors, move=False, duration=1, *args, **kwargs):
         num_colors = len(colors)
         if not move:
             for i, pixel in enumerate(pixels):
@@ -99,7 +99,7 @@ class AlternatingColorsEffect(Effect):
 async def main():
     try:
         while True:
-            await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)], True, 0.2)
+            await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)], True, 1)
             await asyncio.sleep(10)
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
