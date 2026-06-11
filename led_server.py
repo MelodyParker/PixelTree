@@ -152,7 +152,7 @@ led_status = 0
 def effects_api():
     return engine.effects_to_json()
 
-@app.route("/effect/run", methods=["POST"])
+@app.route("/effect/run/", methods=["POST"])
 async def run_effect():
     json_data = request.get_json()
     await engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})

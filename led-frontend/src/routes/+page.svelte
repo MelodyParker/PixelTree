@@ -16,8 +16,29 @@
     })
 
     let apiRoute = $state("red");
-    function btnClick() {
-        fetch(`http://pi-tree:5000/leds/${apiRoute}`);
+
+    async function sendEffect() {
+        let id = selectedEffect.id;
+        const url = "http://pi-tree:5000/effect/run/";
+        const payload = {
+            id: id
+        };
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            const data = await response.json();
+            console.log("We did it!")
+
+        } catch (err) {
+            console.error("Error sending data: ", err)
+        }
+
+
     }
 
     let selectedEffect = $state({id: "", params: []});
@@ -49,14 +70,7 @@
         <option>{i}</option>
     {/each}
 </select> -->
-
-<select name="api-route" id="api-route" bind:value={apiRoute}>
-    <option value="red" class="red">Red</option>
-    <option value="green" class="green">Green</option>
-    <option value="blue" class="blue">Blue</option>
-    <option value="off" class="off">Off</option>
-</select>
-<button onclick={btnClick}>Send command</button>
+<button onclick={sendEffect}>Start Effect</button>
 {/if}
 
 
