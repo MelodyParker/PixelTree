@@ -7,11 +7,21 @@
 </head>
 <body>
 
-    <button type="button" id="toggleBtn">Toggle LED</button>
+    <button type="button" id="red-btn">RED</button>
+    <button type="button" id="green-btn">GREEN</button>
+    <button type="button" id="blue-btn">BLUE</button>
     <script>
-        const btn = document.querySelector("#toggleBtn");
-        btn.addEventListener("click", async e => {
-            await fetch("led/toggle/");
+        const btnR = document.querySelector("#red-btn");
+        btnR.addEventListener("click", async e => {
+            await fetch("leds/red/");
+        })
+        const btnG = document.querySelector("#green-btn");
+        btnG.addEventListener("click", async e => {
+            await fetch("leds/green/");
+        })
+        const btnB = document.querySelector("#blue-btn");
+        btnR.addEventListener("click", async e => {
+            await fetch("leds/blue/");
         })
     </script>
 </body>
