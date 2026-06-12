@@ -126,6 +126,7 @@ class GradientEffect(Effect):
                 gg = lerp(g1, g2, frac)
                 bg = lerp(b1, b2, frac)
                 pixels[i] = gamma_correct((rg, gg, bg))
+            pixels.show()
 
                 
 
