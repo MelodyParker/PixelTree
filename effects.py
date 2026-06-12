@@ -139,7 +139,7 @@ async def main():
         while True:
             # await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)], True, 2, 1)
             # await engine.run_effect("fill-rgb", rgb=(255, 255, 255), pixels=pixels[::2])
-            await engine.run_effect("gradient", colors=[(247, 0, 125), (96, 100, 200), (255, 255, 255)])
+            await engine.run_effect("gradient", colors=[(0, 0, 255), (255, 0, 0), (255, 255, 255), (255, 0, 0), (0, 0, 255)])
             await asyncio.sleep(float('inf'))
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
