@@ -1,7 +1,7 @@
 import board
 import neopixel
 import asyncio
-from Effect import Effect
+from effects_engine.Effect import Effect
 from effects_engine.Effects_Engine import Effects_Engine
 
 
