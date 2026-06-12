@@ -29,7 +29,7 @@ class Effects_Engine:
     def effects_to_json(self):
         return dumps(self.effects_info)
     
-    async def run_effect(self, name, *args, **kwargs):
+    async def run_effect(self, name, pixels=None, *args, **kwargs):
         effect = self.registered_effects.get(name)
         if effect is None:
             raise KeyError("Unregistered effect")
@@ -40,6 +40,6 @@ class Effects_Engine:
                 await self.active_task
             except asyncio.CancelledError:
                 print("Old effect killed successfully")
-        self.active_task = asyncio.create_task(effect.run(self.pixels, *args, **kwargs))
+        self.active_task = asyncio.create_task(effect.run((pixels if pixels is not None else self.pixels), *args, **kwargs))
         
     

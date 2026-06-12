@@ -36,7 +36,8 @@ pixels = neopixel.NeoPixel(
 
 
 engine = Effects_Engine(pixels)
-
+odd_engine = Effects_Engine(pixels[::2])
+even_engine = Effects_Engine(pixels[1::2])
 
 
 @engine.register_effect_factory("off", name="All Off", description="Turns off all LEDs", params=[])
@@ -104,13 +105,26 @@ class AlternatingColorsEffect(Effect):
             await asyncio.sleep(duration)
 
         
+# class GradientEffect(Effect):
+#     @staticmethod
+#     async def run(pixels, colors, move=False, direction=1, duration=1):
+#         num_colors = len(colors)
+#         num_pixels = len(pixels)
+#         if not move:
+#             for i, pixel in enumerate(pixels):
+#                 num = (i / num_pixels) 
+                
+
+
 
 
 
 async def main():
     try:
         while True:
-            await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)], True, 2, 1)
+            # await engine.run_effect("alternating-colors", [(228, 3, 3), (255, 140, 0), (255, 237, 0), (0, 128, 38), (0, 76, 255), (115, 41, 130)], True, 2, 1)
+            await engine.run_effect("fill-rgb", color=(255, 255, 255), pixels=pixels[::2])
+            await engine.run_effect("flash-colors", colors=[(255, 0, 0), (0, 255, 0)], durations=[1, 1], pixels=pixels[1::2])
             await asyncio.sleep(float('inf'))
             # await engine.run_effect("flash-colors", [(255, 0, 0), (0, 255, 0), (0, 0, 255)], [0.3, 0.3, 0.4]) # make it green?
             # await asyncio.sleep(3)
