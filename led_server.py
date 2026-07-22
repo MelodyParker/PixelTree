@@ -157,6 +157,7 @@ def effects_api():
 # @cross_origin()
 async def run_effect():
     json_data = request.get_json()
+    print(f"JSON DATA: \n {json_data}")
     await engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
     return jsonify({"status": "data received"})
 
