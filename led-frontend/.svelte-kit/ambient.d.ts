@@ -57,15 +57,6 @@ declare module '$env/static/private' {
 	export const CUDA_PATH_V13_2: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_11932_1262719628: string;
-	export const EFC_11932_1592913036: string;
-	export const EFC_11932_2283032206: string;
-	export const EFC_11932_2775293581: string;
-	export const EFC_11932_2946480783: string;
-	export const EFC_11932_3789132940: string;
-	export const EFC_11932_4126798990: string;
-	export const FPS_BROWSER_APP_PROFILE_STRING: string;
-	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -121,7 +112,6 @@ declare module '$env/static/private' {
 	export const PYDEVD_DISABLE_FILE_VALIDATION: string;
 	export const PYTHONSTARTUP: string;
 	export const PYTHON_BASIC_REPL: string;
-	export const SESSIONNAME: string;
 	export const STM32CubeMX_PATH: string;
 	export const STM32_PRG_PATH: string;
 	export const SystemDrive: string;
@@ -136,6 +126,7 @@ declare module '$env/static/private' {
 	export const USERPROFILE: string;
 	export const VIRTUAL_ENV: string;
 	export const VIRTUAL_ENV_PROMPT: string;
+	export const VSCODE_DEBUGPY_ADAPTER_ENDPOINTS: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
@@ -249,15 +240,6 @@ declare module '$env/dynamic/private' {
 		CUDA_PATH_V13_2: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_11932_1262719628: string;
-		EFC_11932_1592913036: string;
-		EFC_11932_2283032206: string;
-		EFC_11932_2775293581: string;
-		EFC_11932_2946480783: string;
-		EFC_11932_3789132940: string;
-		EFC_11932_4126798990: string;
-		FPS_BROWSER_APP_PROFILE_STRING: string;
-		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -313,7 +295,6 @@ declare module '$env/dynamic/private' {
 		PYDEVD_DISABLE_FILE_VALIDATION: string;
 		PYTHONSTARTUP: string;
 		PYTHON_BASIC_REPL: string;
-		SESSIONNAME: string;
 		STM32CubeMX_PATH: string;
 		STM32_PRG_PATH: string;
 		SystemDrive: string;
@@ -328,6 +309,7 @@ declare module '$env/dynamic/private' {
 		USERPROFILE: string;
 		VIRTUAL_ENV: string;
 		VIRTUAL_ENV_PROMPT: string;
+		VSCODE_DEBUGPY_ADAPTER_ENDPOINTS: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
