@@ -20,7 +20,8 @@ pixels = neopixel.NeoPixel(
     PIXEL_PIN, 
     NUM_PIXELS, 
     brightness=BRIGHTNESS, 
-    auto_write=False
+    auto_write=False,
+    pixel_order=neopixel.GRB
 )
 
 # Define custom color tuples (Green, Red, Blue)
