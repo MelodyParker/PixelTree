@@ -157,7 +157,7 @@ def effects_api():
 @cross_origin()
 def run_effect():
     json_data = request.get_json()
-    # _ = engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
+    _ = engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
     return jsonify({"status": "data received"})
 
 # Define the root route
