@@ -3,3 +3,4 @@ adafruit-blinka
 flask
 flask-cors
 adafruit-circuitpython-neopixel
+flask[async]

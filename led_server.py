@@ -155,7 +155,7 @@ def effects_api():
 
 @app.route("/effect/run/", methods=["POST", "OPTIONS"])
 @cross_origin()
-async def run_effect():
+def run_effect():
     json_data = request.get_json()
     # _ = engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
     return jsonify({"status": "data received"})
