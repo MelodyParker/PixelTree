@@ -2,3 +2,4 @@ rpi_ws281x
 adafruit-blinka
 flask
 flask-cors
+adafruit-circuitpython-neopixel
