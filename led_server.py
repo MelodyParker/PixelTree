@@ -156,6 +156,8 @@ def effects_api():
 @app.route("/effect/run/", methods=["POST", "OPTIONS"])
 # @cross_origin()
 async def run_effect():
+    if request.method == "OPTIONS":
+        return jsonify({"status": "ok"})  # flask-cors will attach headers
     json_data = request.get_json()
     print(f"JSON DATA: \n {json_data}")
     await engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})

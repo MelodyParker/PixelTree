@@ -37,8 +37,6 @@
         } catch (err) {
             console.error("Error sending data: ", err)
         }
-
-
     }
 
     let selectedEffect = $state({id: "", params: []});
