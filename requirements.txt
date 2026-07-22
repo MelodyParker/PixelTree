@@ -1,2 +1,4 @@
 rpi_ws281x
 adafruit-blinka
+flask
+flask flask-cors
