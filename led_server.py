@@ -142,7 +142,7 @@ class AlternatingColorsEffect(Effect):
             offset -= direction
             await asyncio.sleep(duration)
 
-        
+
 
 app = Flask(__name__)
 # CORS(app)
@@ -163,6 +163,13 @@ async def run_effect():
     print(f"JSON DATA: \n {json_data}")
     await engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
     return jsonify({"status": "data received"})
+
+@app.route("/calibrate/<int:pixel>")
+def calibrate(pixel):
+    pixels.fill((0,0,0))
+    pixels[pixel] = (255, 255, 255)
+    pixels.show()
+    return f"{pixel}"
 
 # Define the root route
 @app.route("/")

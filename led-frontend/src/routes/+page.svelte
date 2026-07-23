@@ -16,13 +16,15 @@
     })
 
     let apiRoute = $state("red");
-
     async function sendEffect() {
         let id = selectedEffect.id;
         const url = "http://pi-tree:5000/effect/run/";
         const payload = {
             id: id
         };
+        if (id == "fill-rgb") {
+            payload.rgb = [rgb_r, rgb_g, rgb_b];
+        }
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -40,11 +42,14 @@
     }
 
     let selectedEffect = $state({id: "", params: []});
+    let rgb_r = $state(0);
+    let rgb_g = $state(0);
+    let rgb_b = $state(0);
 </script>
 
 {#if loadPage}
 {effectsData.data}
-
+<form onsubmit={sendEffect}>
 
 <select name="effect-selector" id="effect-selector" bind:value={selectedEffect.id}>
     {#each Object.entries(effectsData.data) as [effect_id, effect], i}
@@ -63,12 +68,17 @@
     {/each}
 </select>
 
+<input type="number" min="0" max="255" bind:value={rgb_r}>
+<input type="number" min="0" max="255" bind:value={rgb_g}>
+<input type="number" min="0" max="255" bind:value={rgb_b}>
+
 <!-- <select name="hi" id="hi">
     {#each [1, 2, 3] as i} 
         <option>{i}</option>
     {/each}
 </select> -->
-<button onclick={sendEffect}>Start Effect</button>
+<button type="submit" onclick={sendEffect}>Start Effect</button>
+</form>
 {/if}
 
 
