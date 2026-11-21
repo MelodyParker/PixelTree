@@ -68,8 +68,8 @@ class FillRGBEffect(Effect):
 
 @engine.register_effect_factory("flash-colors", name="Flash Colors",
                                 description="Flashes all pixels with the given colors",
-                                params=[{"type": "list color", "length": "N", "name": "Colors"}, 
-                                        {"type": "list number", "length": "N", "name": "Durations"}])
+                                params=[{"type": "list_N color", "name": "Colors"}, 
+                                        {"type": "list_N number", "name": "Durations"}])
 class FlashColorsEffect(Effect):
     @staticmethod
     async def run(pixels, colors, durations, *args, **kwargs):
@@ -82,7 +82,7 @@ class FlashColorsEffect(Effect):
 
 @engine.register_effect_factory("alternating-colors", name="Alternate Colors",
                                 description="Alternates pixels with the given colors",
-                                params=[{"type": "list color", "length": "N", "name": "Colors"},
+                                params=[{"type": "list_2 color", "name": "Colors"},
                                         {"type": "bool", "default": "false", "name": "Move?"},
                                         {"type": "number", "default": "1", "name": "Direction (positive = forward)"},
                                         {"type": "number", "default": "1", "name": "Duration"}])
