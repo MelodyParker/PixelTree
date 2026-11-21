@@ -1,118 +1,132 @@
 <script>
-    import { onMount } from "svelte";
-    import { effectsData } from "$lib/stores.svelte";
-    import NumberInput from "../components/type_inputs/NumberInput.svelte";
-    import ColorInput from "../components/type_inputs/ColorInput.svelte";
-    import BoolInput from "../components/type_inputs/BoolInput.svelte";
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import EffectForm from '$lib/components/EffectForm.svelte';
+	import HistorySidebar from '$lib/components/HistorySidebar.svelte';
+	import { effectsStore } from '$lib/stores/effects.svelte.js';
+	import { toasts } from '$lib/stores/toasts.svelte.js';
+	import { buildInitialEffectState } from '$lib/utils/typeParser.js';
 
-    let loadPage = $state(false);
-    onMount(async () => {
-        let response = await fetch("http://pi-tree:5000/api/effects");
-        response.json().then(json => {
-            effectsData.data = json;
-            console.log(json)
-            loadPage = true;
-        })
-    })
+	let selectedId = $state('');
+	let paramValues = $state({});
+	let linkedLengths = $state({});
+	let linkedVars = $state([]);
+	let initialized = $state(false);
 
-    let apiRoute = $state("red");
-    async function sendEffect() {
-        let id = selectedEffect.id;
-        const url = "http://pi-tree:5000/effect/run/";
-        const payload = {
-            id: id
-        };
-        if (id == "fill-rgb") {
-            let rgb = hexToRgbBitwise(colorSelect);
-            payload.rgb = [rgb.r, rgb.g, rgb.b];
-        }
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            })
-            const data = await response.json();
-            console.log("We did it!")
+	onMount(() => {
+		effectsStore.load();
+	});
 
-        } catch (err) {
-            console.error("Error sending data: ", err)
-        }
-    }
+	function selectEffect(effectId, seedParams = null) {
+		const effect = effectsStore.byId[effectId];
+		if (!effect) return false;
 
-    let selectedEffect = $state({id: "", params: []});
-    let rgb_r = $state(0);
-    let rgb_g = $state(0);
-    let rgb_b = $state(0);
-    let colorSelect = $state("#00ff00");
-    function hexToRgbBitwise(hex) {
-        // Strip the # symbol if it is present
-        const cleanHex = hex.replace('#', '');
-        
-        // Parse the hexadecimal string to an integer
-        const num = parseInt(cleanHex, 16);
+		const state = buildInitialEffectState(effect, seedParams);
+		selectedId = effect.id;
+		paramValues = state.values;
+		linkedLengths = state.linkedLengths;
+		linkedVars = state.linkedVars;
+		return true;
+	}
 
-        // Use bit shifts and a bitwise AND mask to extract individual channels
-        return {
-            r: (num >> 16) & 255,
-            g: (num >> 8) & 255,
-            b: num & 255
-        };
-        }
+	// Initialize once effects are loaded (honoring /effects handoff, ?effect= query, fill-rgb, or first effect)
+	$effect(() => {
+		if (initialized || effectsStore.list.length === 0) return;
+
+		const queued = effectsStore.consumeQueuedEffect();
+		const queryId = $page.url.searchParams.get('effect');
+		const preferred = queued || queryId;
+
+		if (preferred && effectsStore.byId[preferred]) {
+			selectEffect(preferred);
+			if (queued) {
+				toasts.info('Loaded Defaults', `Populated "${effectsStore.byId[preferred].name}" with default values.`);
+			}
+		} else {
+			selectEffect(effectsStore.defaultEffectId);
+		}
+
+		initialized = true;
+	});
+
+	// If a refresh removes the currently selected effect, fall back cleanly
+	$effect(() => {
+		if (!initialized || effectsStore.list.length === 0) return;
+		if (selectedId && !effectsStore.byId[selectedId]) {
+			selectEffect(effectsStore.defaultEffectId);
+		}
+	});
+
+	function handleUpdateParam(varname, nextVal) {
+		paramValues = {
+			...paramValues,
+			[varname]: nextVal
+		};
+	}
+
+	function handleUpdateLinked(nextLengths, nextValues) {
+		linkedLengths = nextLengths;
+		paramValues = nextValues;
+	}
+
+	function handleResetDefaults() {
+		if (!selectedId) return;
+		selectEffect(selectedId);
+		toasts.info('Reset to Defaults', `Restored default parameters for "${effectsStore.byId[selectedId]?.name ?? selectedId}".`);
+	}
+
+	function handleLoadHistoryEntry(entry) {
+		if (!effectsStore.byId[entry.id]) {
+			toasts.error(
+				'Effect Not Available',
+				`"${entry.name}" (${entry.id}) is not currently advertised by the server.`
+			);
+			return;
+		}
+		selectEffect(entry.id, entry.params);
+		toasts.info('Loaded from History', `Loaded "${entry.name}" into the editor.`);
+	}
 </script>
 
-{#if loadPage}
-{effectsData.data}
-<form onsubmit={sendEffect}>
+<svelte:head>
+	<title>Runner · Pi-Tree Controller</title>
+</svelte:head>
 
-<select name="effect-selector" id="effect-selector" bind:value={selectedEffect.id}>
-    {#each Object.entries(effectsData.data) as [effect_id, effect], i}
-        <option value={effect_id}>{effect.name}</option>
-        <!-- {#each effect.params as param, j (param.name)}
-            {#if param.type == "number"}
-            <NumberInput bind:value={selectedEffect.params[j]} name={param.name} />
-            {:else if param.type == "color"}
-            <ColorInput bind:value={selectedEffect.params[j]} name={param.name} />
-            {:else if param.type == "bool"}
-            <BoolInput bind:value={selectedEffect.params[j]} name={param.name} />
-            {:else}
-            Invalid type {param.type}
-            {/if}
-        {/each} -->
-    {/each}
-</select>
+<div class="runner-grid">
+	<div class="primary-col">
+		<EffectForm
+			{selectedId}
+			{paramValues}
+			{linkedLengths}
+			{linkedVars}
+			onSelectEffect={(id) => selectEffect(id)}
+			onUpdateParam={handleUpdateParam}
+			onUpdateLinked={handleUpdateLinked}
+			onResetDefaults={handleResetDefaults}
+		/>
+	</div>
 
-<input type="color" bind:value={colorSelect} />
-<!-- <input type="number" min="0" max="255" bind:value={rgb_r}>
-<input type="number" min="0" max="255" bind:value={rgb_g}>
-<input type="number" min="0" max="255" bind:value={rgb_b}> -->
-
-<!-- <select name="hi" id="hi">
-    {#each [1, 2, 3] as i} 
-        <option>{i}</option>
-    {/each}
-</select> -->
-<button type="submit" onclick={sendEffect}>Start Effect</button>
-</form>
-{/if}
-
+	<div class="sidebar-col">
+		<HistorySidebar onLoadEntry={handleLoadHistoryEntry} />
+	</div>
+</div>
 
 <style>
-    .red {
-        background-color: red;
-    }
-    .green {
-        background-color: green;
-    }
-    .blue {
-        background-color: blue;
-    }
-    .off {
-        background-color: grey;
-    }
-    option:hover {
-        background-color: blue;
-    }
+	.runner-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: var(--space-lg);
+		align-items: start;
+	}
+
+	.primary-col,
+	.sidebar-col {
+		min-width: 0;
+	}
+
+	@media (max-width: 980px) {
+		.runner-grid {
+			grid-template-columns: 1fr;
+		}
+	}
 </style>

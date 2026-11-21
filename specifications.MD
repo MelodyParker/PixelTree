@@ -6,7 +6,7 @@ url: http://pi-tree:5000/
 
 fetches the effects available on the server in the following format:
 
-`{"off": {"name": "All Off", "description": "Turns off all LEDs", "params": []}, "fill-red": {"name": "Fill Red", "description": "Colors all LEDs red", "params": []}, "fill-rgb": {"name": "Fill RGB", "description": "Colors all LEDs with the specified RGB color", "params": [{"type": "color", "name": "Color"}]}, "flash-colors": {"name": "Flash Colors", "description": "Flashes all pixels with the given colors", "params": [{"type": "list_N color", "name": "Colors"}, {"type": "list_N number", "name": "Durations"}]}, "alternating-colors": {"name": "Alternate Colors", "description": "Alternates pixels with the given colors", "params": [{"type": "list color", "name": "Colors"}, {"type": "bool", "default": "false", "name": "Move?"}, {"type": "number", "default": "1", "name": "Direction (positive = forward)"}, {"type": "number", "default": "1", "name": "Duration"}]}}`
+`{"off": {"name": "All Off", "description": "Turns off all LEDs", "params": []}, "fill-red": {"name": "Fill Red", "description": "Colors all LEDs red", "params": []}, "fill-rgb": {"name": "Fill RGB", "description": "Colors all LEDs with the specified RGB color", "params": [{"type": "color", "name": "Color", "varname": "rgb"}]}, "flash-colors": {"name": "Flash Colors", "description": "Flashes all pixels with the given colors", "params": [{"type": "list_N color", "name": "Colors", "varname": "colors"}, {"type": "list_N number", "name": "Durations", "varname": "durations"}]}, "alternating-colors": {"name": "Alternate Colors", "description": "Alternates pixels with the given colors", "params": [{"type": "list color", "name": "Colors"}, {"type": "bool", "default": "false", "name": "Move?", "varname": "move"}, {"type": "number", "default": "1", "name": "Direction (positive = forward)", "varname": "direction"}, {"type": "number", "default": "1", "name": "Duration", "varname": "duration"}]}}`
 
 The types that are supported are 
 - `number` - a floating point number
@@ -22,7 +22,7 @@ Note that the list parameter can be recursive (list of lists of length 3 would b
 
 Runs the specified effect
 
-The effect and its parameters are specified with json as in the following example to run the fill-rgb effect:
+The effect and its parameters (keyed by the varname property in each param) are specified with json as in the following example to run the fill-rgb effect:
 
 `{'id': 'fill-rgb', 'rgb': [128, 0, 255]}`
 
