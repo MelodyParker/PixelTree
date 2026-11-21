@@ -23,7 +23,8 @@
             id: id
         };
         if (id == "fill-rgb") {
-            payload.rgb = [rgb_r, rgb_g, rgb_b];
+            let rgb = hexToRgbBitwise(colorSelect);
+            payload.rgb = [rgb.r, rgb.g, rgb.b];
         }
         try {
             const response = await fetch(url, {
@@ -45,6 +46,21 @@
     let rgb_r = $state(0);
     let rgb_g = $state(0);
     let rgb_b = $state(0);
+    let colorSelect = $state("#00ff00");
+    function hexToRgbBitwise(hex) {
+        // Strip the # symbol if it is present
+        const cleanHex = hex.replace('#', '');
+        
+        // Parse the hexadecimal string to an integer
+        const num = parseInt(cleanHex, 16);
+
+        // Use bit shifts and a bitwise AND mask to extract individual channels
+        return {
+            r: (num >> 16) & 255,
+            g: (num >> 8) & 255,
+            b: num & 255
+        };
+        }
 </script>
 
 {#if loadPage}
@@ -68,9 +84,10 @@
     {/each}
 </select>
 
-<input type="number" min="0" max="255" bind:value={rgb_r}>
+<input type="color" bind:value={colorSelect} />
+<!-- <input type="number" min="0" max="255" bind:value={rgb_r}>
 <input type="number" min="0" max="255" bind:value={rgb_g}>
-<input type="number" min="0" max="255" bind:value={rgb_b}>
+<input type="number" min="0" max="255" bind:value={rgb_b}> -->
 
 <!-- <select name="hi" id="hi">
     {#each [1, 2, 3] as i} 
