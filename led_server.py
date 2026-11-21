@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, Response, jsonify, request
 from flask_cors import CORS, cross_origin
 import RPi.GPIO as GPIO         # Import Raspberry Pi GPIO library
 from time import sleep          # Import the sleep function 
@@ -143,26 +143,44 @@ class AlternatingColorsEffect(Effect):
             await asyncio.sleep(duration)
 
 
-
 app = Flask(__name__)
-# CORS(app)
-CORS(app, resources={r"/*": {"origins": "*", "allow_headers": ["Content-Type"], "methods": ["POST", "GET", "OPTIONS"]}})
+app.url_map.strict_slashes = False
 
-led_status = 0
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": "*",
+            "allow_headers": ["Content-Type", "Accept"],
+            "methods": ["GET", "POST", "OPTIONS"],
+        }
+    },
+)
 
-@app.route("/api/effects/")
+@app.route("/api/effects", methods=["GET"])
 def effects_api():
-    return engine.effects_to_json()
+    return Response(engine.effects_to_json(), mimetype="application/json")
 
-@app.route("/effect/run/", methods=["POST", "OPTIONS"])
-# @cross_origin()
+@app.route("/effect/run", methods=["POST"])
 async def run_effect():
-    if request.method == "OPTIONS":
-        return jsonify({"status": "ok"})  # flask-cors will attach headers
-    json_data = request.get_json()
-    print(f"JSON DATA: \n {json_data}")
-    await engine.run_effect(json_data["id"], **{key: val for key, val in json_data.items()})
-    return jsonify({"status": "data received"})
+    json_data = request.get_json(silent=True)
+    if not json_data or "id" not in json_data:
+        return jsonify({"status": "error", "error": "Missing effect 'id' in JSON payload"}), 400
+
+    effect_id = json_data["id"]
+    params = {key: val for key, val in json_data.items() if key != "id"}
+    print(f"JSON DATA:\n{json_data}")
+
+    try:
+        await engine.run_effect(effect_id, **params)
+    except Exception as e:
+        return jsonify({"status": "error", "error": str(e)}), 400
+
+    return jsonify({
+        "status": "ok",
+        "id": effect_id,
+        "message": f"Effect '{effect_id}' started."
+    }), 200
 
 @app.route("/calibrate/<int:pixel>")
 def calibrate(pixel):
@@ -172,9 +190,9 @@ def calibrate(pixel):
     return f"{pixel}"
 
 # Define the root route
-@app.route("/")
-def home():
-    return render_template("index.html")
+# @app.route("/")
+# def home():
+#     return render_template("index.html")
 
 # Define an additional API route
 @app.route("/leds/red/")
