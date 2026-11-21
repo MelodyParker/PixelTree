@@ -94,7 +94,7 @@ class FillRedEffect(Effect):
 
 @engine.register_effect_factory("fill-rgb", name="Fill RGB", 
                                 description="Colors all LEDs with the specified RGB color",
-                                params=[{"type": "color", "name": "Color"}])
+                                params=[{"type": "color", "name": "Color", "varname": "rgb"}])
 class FillRGBEffect(Effect):
     @staticmethod
     async def run(pixels, rgb, *args, **kwargs):
@@ -104,8 +104,8 @@ class FillRGBEffect(Effect):
 
 @engine.register_effect_factory("flash-colors", name="Flash Colors",
                                 description="Flashes all pixels with the given colors",
-                                params=[{"type": "list_N color", "name": "Colors"}, 
-                                        {"type": "list_N number", "name": "Durations"}])
+                                params=[{"type": "list_N color", "name": "Colors", "varname": "colors"}, 
+                                        {"type": "list_N number", "name": "Durations", "varname": "durations"}])
 class FlashColorsEffect(Effect):
     @staticmethod
     async def run(pixels, colors, durations, *args, **kwargs):
@@ -119,9 +119,9 @@ class FlashColorsEffect(Effect):
 @engine.register_effect_factory("alternating-colors", name="Alternate Colors",
                                 description="Alternates pixels with the given colors",
                                 params=[{"type": "list color", "name": "Colors"},
-                                        {"type": "bool", "default": "false", "name": "Move?"},
-                                        {"type": "number", "default": "1", "name": "Direction (positive = forward)"},
-                                        {"type": "number", "default": "1", "name": "Duration"}])
+                                        {"type": "bool", "default": "false", "name": "Move?", "varname": "move"},
+                                        {"type": "number", "default": "1", "name": "Direction (positive = forward)", "varname": "direction"},
+                                        {"type": "number", "default": "1", "name": "Duration", "varname": "duration"}])
 class AlternatingColorsEffect(Effect):
     @staticmethod
     # direction 1 means forwards, direction -1 means backwards
