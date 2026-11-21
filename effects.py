@@ -107,7 +107,7 @@ class AlternatingColorsEffect(Effect):
             await asyncio.sleep(duration)
 
 @engine.register_effect_factory("gradient", name="Gradient", description="Gradient between given colors", params=[
-    {"type": "list color", "length": "N", "name": "Colors"}
+    {"type": "list color", "name": "Colors"}
 ])
 class GradientEffect(Effect):
     @staticmethod
@@ -156,4 +156,5 @@ async def main():
     finally:
         await engine.run_effect("off")
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
