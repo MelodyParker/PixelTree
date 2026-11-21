@@ -27,6 +27,7 @@ class Effects_Engine:
         return decorator
     
     def effects_to_json(self):
+        print(dumps(self.effects_info))
         return dumps(self.effects_info)
     
     async def run_effect(self, name, pixels=None, *args, **kwargs):
